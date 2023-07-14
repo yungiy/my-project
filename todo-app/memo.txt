@@ -1,0 +1,8 @@
+color set
+black
+4b4b4c
+676767
+808080
+afafaf
+c6c6c6
+white

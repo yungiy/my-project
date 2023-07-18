@@ -1,18 +1,19 @@
 import React from 'react';
-import { Box } from '@mui/material';
-å;
-const Categories = [
+import { Box, Link } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+
+const categories = [
   {
     name: 'all',
     text: '전체보기',
   },
   {
     name: 'business',
-    text: '비지니스',
+    text: '비즈니스',
   },
   {
     name: 'entertainment',
-    text: '연예',
+    text: '엔터테인먼트',
   },
   {
     name: 'health',
@@ -26,9 +27,13 @@ const Categories = [
     name: 'sports',
     text: '스포츠',
   },
+  {
+    name: 'technology',
+    text: '기술',
+  },
 ];
 
-export default function Categories() {
+const Categories = () => {
   return (
     <Box
       display="flex"
@@ -42,8 +47,13 @@ export default function Categories() {
         },
       }}
     >
-      {Categories.map((c) => (
-        <Box
+      {categories.map((c) => (
+        <Link
+          key={c.name}
+          component={NavLink}
+          activeClassName="active"
+          exact={c.name === 'all'}
+          to={c.name === 'all' ? '/' : `/${c.name}`}
           sx={{
             cursor: 'pointer',
             whiteSpace: 'pre',
@@ -53,15 +63,24 @@ export default function Categories() {
             '&:hover': {
               color: '#495057',
             },
-            '&+&': {
+            '&.active': {
+              fontWeight: 600,
+              borderBottom: '2px solid #22b8cf',
+              color: '#22b8cf',
+              '&:hover': {
+                color: '#3bc9db',
+              },
+            },
+            '& + &': {
               marginLeft: '1rem',
             },
           }}
-          key={c.name}
         >
           {c.text}
-        </Box>
+        </Link>
       ))}
     </Box>
   );
-}
+};
+
+export default Categories;

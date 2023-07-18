@@ -22,7 +22,6 @@ export default function NewsList() {
     };
     fetchData();
   }, []);
-
   // 대기 중이면
   if (loading) {
     return <Box>대기 중</Box>;

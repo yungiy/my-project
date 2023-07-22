@@ -1,38 +1,32 @@
 import { Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import usePromise from '../lib/usePromise';
 import NewsItem from './NewsItem';
 import axios from 'axios';
 
-export default function NewsList() {
-  const [articles, setArticles] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          'https://newsapi.org/v2/top-headlines?country=kr&apiKey=6dcef8ea2cc443e5ba666a954b355c73',
-        );
-        setArticles(response.data.articles);
-      } catch (e) {
-        console.log(e);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+export default function NewsList({ category }) {
+  const [loading, response, error] = usePromise(() => {
+    const query = category === 'all' ? '' : `&category=${category}`;
+    return axios.get(
+      `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=0a8c4202385d4ec1bb93b7e277b3c51f`,
+    );
+  }, [category]);
   // 대기 중이면
   if (loading) {
     return <Box>대기 중</Box>;
   }
 
-  // 아직 articles 값이 설정되어 있지 않으면
-  if (!articles) {
+  // 아직 response 값이 설정되지 않았을 때
+  if (!response) {
     return null;
   }
 
-  // articles 값이 유효하면
+  if (error) {
+    return <Box>에러 발생</Box>;
+  }
+
+  // response 값이 유효할 때
+  const { articles } = response.data;
   return (
     <Box
       boxSizing="border-box"
@@ -49,10 +43,7 @@ export default function NewsList() {
       }}
     >
       {articles.map((article) => (
-        <Box>
-          {' '}
-          <NewsItem key={article.url} article={article} />
-        </Box>
+        <NewsItem key={article.url} article={article} />
       ))}
     </Box>
   );

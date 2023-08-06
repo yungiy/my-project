@@ -47,6 +47,7 @@ export const write = async (ctx) => {
 		title,
 		body,
 		tags,
+		user: ctx.state.user,
 	});
 	try {
 		await post.save();
@@ -146,7 +147,6 @@ export const update = async (ctx) => {
 		ctx.body = result.error;
 		return;
 	}
-
 	try {
 		const post = await Post.findByIdAndUpdate(id, ctx.request.body, {
 			new: true, // 이값을 설정하면 업데이트 되기전의 데이터를 반환

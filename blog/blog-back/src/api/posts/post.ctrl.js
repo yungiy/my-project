@@ -5,10 +5,30 @@ import Joi from 'joi';
 const { ObjectId } = mongoose.Types;
 
 // objectId 검증 함수
-export const checkObjectId = (ctx, next) => {
+export const getPostById = async (ctx, next) => {
 	const { id } = ctx.params;
 	if (!ObjectId.isValid(id)) {
 		ctx.status = 400; // Bad Request
+		return;
+	}
+	try {
+		const post = await Post.findById(id);
+		// post가 존재하지 않을 때
+		if (!post) {
+			ctx.status = 400; // Not found
+			return;
+		}
+		ctx.state.post = post;
+		return next();
+	} catch (e) {
+		ctx.throw(500, e);
+	}
+};
+
+export const checkOwnPost = (ctx, next) => {
+	const { user, post } = ctx.state;
+	if (post.user._id.toString() !== user._id) {
+		ctx.status = 402;
 		return;
 	}
 	return next();
@@ -69,6 +89,12 @@ export const list = async (ctx) => {
 		return;
 	}
 
+	const { tag, username } = ctx.query;
+	//tag,username값이 유효하면 객체안에 넣고 그렇지 않으면 안넣음
+	const query = {
+		...(username ? { 'user.name': username } : {}),
+		...(tag ? { tag: tag } : {}),
+	};
 	try {
 		const posts = await Post.find()
 			.sort({ _id: -1 }) // 포스트 역순으로 보여줌
@@ -94,17 +120,7 @@ export const list = async (ctx) => {
     findById()함수를 사용해서 특정 id를 가진 데이터 조회
 */
 export const read = async (ctx) => {
-	const { id } = ctx.params;
-	try {
-		const post = await Post.findById(id).exec();
-		if (!post) {
-			ctx.status = 404;
-			return;
-		}
-		ctx.body = post;
-	} catch (e) {
-		ctx.throw(500, e);
-	}
+	ctx.body = ctx.state.post;
 };
 
 /*

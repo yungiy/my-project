@@ -96,12 +96,12 @@ export const list = async (ctx) => {
 		...(tag ? { tag: tag } : {}),
 	};
 	try {
-		const posts = await Post.find()
+		const posts = await Post.find(query)
 			.sort({ _id: -1 }) // 포스트 역순으로 보여줌
 			.limit(10) // page 보이는 개수 제한
 			.skip((page - 1) * 10) // 페이지 기능 구현
 			.exec();
-		const postCount = await Post.countDocuments().exec(); // 마지막 페이지 번호
+		const postCount = await Post.countDocuments(query).exec(); // 마지막 페이지 번호
 		ctx.set('Last-page'), Math.ceil(postCount / 10);
 		ctx.body = posts
 			.map((post) => post.toJSON) //toJSON으로 JSON 형태로 변환 후 변형함

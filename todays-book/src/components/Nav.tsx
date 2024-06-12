@@ -8,8 +8,8 @@ export default function Nav() {
   const [menuToggle, setMenuToggle] = useState(false);
 
   return (
-    <div className='bg-gray-100'>
-      <div className='max-w-8xl mx-auto px-3'>
+    <div>
+      <div className='max-w-6xl mx-auto px-3'>
         <div className='flex justify-between'>
           <div className='flex space-x-4'>
             <div>

@@ -6,7 +6,6 @@ import Link from 'next/link';
 export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
   return (
     <div className='flex items-center justify-center min-h-screen'>
       <div className='bg-white rounded-lg p-6 w-full max-w-md'>
@@ -41,8 +40,8 @@ export default function Login() {
         >
           회원가입
         </button>
-        <Link href="/">
-          <div className="mt-4 w-full text-center block border-2 rounded-md p-2 border-black">
+        <Link href='/'>
+          <div className='mt-4 w-full text-center block border-2 rounded-md p-2 border-black'>
             홈으로 돌아가기
           </div>
         </Link>

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import './Calendar.css';
+import { Box, Button, Container, Grid, Grid2, Typography } from '@mui/material';
 
 export default function Calendar() {
   const [dates, setDates] = useState<JSX.Element[]>([]);
@@ -36,36 +37,36 @@ export default function Calendar() {
     const allDates = prevDates.concat(thisDates, nextDates);
 
     const dateElements = allDates.map((date, index) => (
-      <div key={index} className='date'>{date}</div>
+      <Grid key={index} className='date'>{date}</Grid>
     ));
 
     setDates(dateElements);
   }, [viewYear, viewMonth]);
 
   return (
-    <div className="calendar">
-        <div className="header">
-            <div className="year-month">{`${viewYear}년 ${viewMonth + 1}월`}</div>
-            <div className="nav">
-                <button className="nav-btn go-prev">&lt;</button>
-                <button className="nav-btn go-today">Today</button>
-                <button className="nav-btn go-next">&gt;</button>
-            </div>
-        </div>
-        <div className="main">
-            <div className="days">
-                <div className="day">일</div>
-                <div className="day">월</div>
-                <div className="day">화</div>
-                <div className="day">수</div>
-                <div className="day">목</div>
-                <div className="day">금</div>
-                <div className="day">토</div>
-            </div>
-            <div className="dates">
+    <Container className="calendar">
+        <Box className="header">
+            <Typography className="year-month">{`${viewYear}년 ${viewMonth + 1}월`}</Typography>
+            <Box className="nav">
+                <Button className="nav-btn go-prev">&lt;</Button>
+                <Button className="nav-btn go-today">Today</Button>
+                <Button className="nav-btn go-next">&gt;</Button>
+            </Box>
+        </Box>
+        <Box className="main">
+            <Box className="days">
+                <Grid className="day">일</Grid>
+                <Grid className="day">월</Grid>
+                <Grid className="day">화</Grid>
+                <Grid className="day">수</Grid>
+                <Grid className="day">목</Grid>
+                <Grid className="day">금</Grid>
+                <Grid className="day">토</Grid>
+            </Box>
+            <Grid className="dates">
               {dates.map((date)=> date)}
-            </div>
-        </div>
-    </div>
+            </Grid>
+        </Box>
+    </Container>
   );
 }

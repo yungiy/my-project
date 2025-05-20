@@ -2,11 +2,13 @@ package com.example.board.domain.post;
 
 import com.example.board.domain.post.dto.PostCreateRequest;
 import com.example.board.domain.post.dto.PostResponse;
+import com.example.board.domain.post.dto.PostSearch;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import com.example.board.domain.user.User;
 import com.example.board.domain.user.UserRepository;
 import com.example.board.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,4 +56,10 @@ public class PostController {
     public void deletePost(@PathVariable Long id) {
         postService.delete(id);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PostResponse>> searchPosts(@ModelAttribute PostSearch search) {
+        return ResponseEntity.ok(postService.search(search));
+    }
+
 }

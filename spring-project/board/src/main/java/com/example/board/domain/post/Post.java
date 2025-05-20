@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Post {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -19,8 +20,6 @@ public class Post {
     private String content;
 
     private String category;
-
-    private int views = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -39,7 +38,4 @@ public class Post {
         this.category = category;
     }
 
-    public void increaseViews() {
-        this.views++;
-    }
 }

@@ -1,8 +1,10 @@
 package com.example.board.domain.post;
 
 import com.example.board.domain.post.dto.PostResponse;
+import com.example.board.domain.post.dto.PostSearch;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,4 +43,9 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    public List<PostResponse> search(PostSearch search) {
+        Specification<Post> spec = PostSpecification.search(search);
+        List<Post> posts = postRepository.findAll(spec);
+        return posts.stream().map(PostResponse::new).toList();
+    }
 }

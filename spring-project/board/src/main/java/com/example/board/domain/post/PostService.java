@@ -1,9 +1,13 @@
 package com.example.board.domain.post;
 
+import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -15,8 +19,20 @@ public class PostService {
     public Post update(Long id, PostUpdateRequest request) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
-        post.update(request.getTitle(), request.getContent(), request.getWriter(), request.getCategory());
+        post.update(request.getTitle(), request.getContent(), request.getCategory());
         return post;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponse> findAll() {
+        return postRepository.findAll().stream()
+                .map(PostResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public PostResponse save(Post post) {
+        return new PostResponse(postRepository.save(post));
     }
 
     public void delete(Long id) {
@@ -24,4 +40,5 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. id=" + id));
         postRepository.delete(post);
     }
+
 }

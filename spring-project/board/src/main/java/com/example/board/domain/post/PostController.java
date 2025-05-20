@@ -1,6 +1,11 @@
 package com.example.board.domain.post;
 
+import com.example.board.domain.post.dto.PostCreateRequest;
+import com.example.board.domain.post.dto.PostResponse;
 import com.example.board.domain.post.dto.PostUpdateRequest;
+import com.example.board.domain.user.User;
+import com.example.board.domain.user.UserRepository;
+import com.example.board.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,26 +18,40 @@ public class PostController {
 
     private final PostRepository postRepository;
     private final PostService postService;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
-    @GetMapping
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    @GetMapping("/all")
+    public List<PostResponse> getAllPosts() {
+        return postService.findAll();
     }
 
-    @PostMapping("/test")
-    public Post createTestPost() {
-        Post post = new Post("제목1", "내용1", "작성자1", "자유");
-        return postRepository.save(post);
+    @PostMapping("/create")
+    public PostResponse createPost(
+            @RequestBody PostCreateRequest request,
+            @RequestHeader("Authorization") String tokenHeader) {
+
+        String token = tokenHeader.replace("Bearer ", "");
+        Long userId = jwtUtil.getUserIdFromToken(token);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+
+        Post post = new Post(request.getTitle(), request.getContent(), request.getCategory(), user);
+        Post saved = postRepository.save(post);
+        return new PostResponse(saved);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody PostUpdateRequest request) {
-        return postService.update(id, request);
+    public PostResponse updatePost(
+            @PathVariable Long id,
+            @RequestBody PostUpdateRequest request) {
+
+        Post updated = postService.update(id, request);
+        return new PostResponse(updated);
     }
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
         postService.delete(id);
     }
-
 }

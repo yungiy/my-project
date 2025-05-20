@@ -1,44 +1,41 @@
 package com.example.board.domain.post;
 
-import com.example.board.common.BaseTimeEntity;
+import com.example.board.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
 @NoArgsConstructor
-@Entity
-public class Post extends BaseTimeEntity {
+public class Post {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
-    private String writer;
-
-    @Column(nullable = false)
     private String category;
 
     private int views = 0;
 
-    public Post(String title, String content, String writer, String category) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Post(String title, String content, String category, User user) {
         this.title = title;
         this.content = content;
-        this.writer = writer;
         this.category = category;
+        this.user = user;
     }
 
-    public void update(String title, String content, String writer, String category) {
+    public void update(String title, String content, String category) {
         this.title = title;
         this.content = content;
-        this.writer = writer;
         this.category = category;
     }
 

@@ -1,29 +1,34 @@
 package com.example.board.domain.comment;
 
 import com.example.board.domain.post.Post;
+import com.example.board.domain.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String writer;
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment(String writer, String content, Post post) {
-        this.writer = writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Comment(String content, Post post, User user) {
         this.content = content;
         this.post = post;
+        this.user = user;
     }
 
     public void update(String content) {

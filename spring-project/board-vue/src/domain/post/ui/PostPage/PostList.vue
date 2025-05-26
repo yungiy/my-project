@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import PostItem from './PostItem.vue';
+import {useRouter} from 'vue-router';
 
 defineProps<{
   posts: Array<{
@@ -15,6 +16,12 @@ defineProps<{
   }>
 }>();
 
+const router = useRouter();
+
+function goToDetail(id: number){
+  router.push(`/post/${id}`);
+}
+
 </script>
 
 <template>
@@ -23,7 +30,8 @@ defineProps<{
         v-for="post in posts"
         :key="post.id"
     >
-      <PostItem :post="post"/>
+      <PostItem :post="post"
+                @click="goToDetail(post.id)"/>
     </div>
   </main>
 </template>

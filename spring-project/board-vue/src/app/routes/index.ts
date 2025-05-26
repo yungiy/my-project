@@ -7,11 +7,6 @@ const routes = [
     children: [
       {path: '', name: 'auth', component: () => import('@/pages/AuthPage.vue')},
       {
-        path: 'search',
-        name: 'search',
-        component: () => import('@/pages/SearchPage.vue')
-      },
-      {
         path: 'posts/create',
         name: 'create-post',
         component: () => import('@/pages/PostCreatePage.vue')
@@ -31,10 +26,22 @@ const routes = [
         path: 'me',
         name: 'my-page',
         component: () => import('@/pages/MyPage.vue')
+      },
+      {
+        path: '/post/:id',
+        name: 'post-detail',
+        component: () => import('@/pages/PostDetailPage.vue'),
+        props: true
+      },
+      {
+        path: 'search',
+        name: 'search',
+        component: () => import('@/pages/SearchPage.vue')
       }
     ]
   }
 ];
+
 const router = createRouter({
   history: createWebHistory(),
   routes

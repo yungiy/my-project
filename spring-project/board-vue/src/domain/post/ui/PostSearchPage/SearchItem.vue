@@ -34,7 +34,6 @@ defineProps<{
         </div>
         <div class="flex items-center gap-1 px-4 text-gray-600">
           <span class="font-semibold text-[11px]">{{ post.author }}</span>
-          <span class="ml-2 text-[10px]">{{ post.likes }}</span>
         </div>
       </div>
     </div>

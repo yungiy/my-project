@@ -12,9 +12,12 @@
     "@headlessui/vue": "^1.7.23",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.7",
+    "@tanstack/vue-query": "^5.77.2",
+    "ky": "^1.8.1",
     "lucide-vue-next": "^0.511.0",
     "marked": "^15.0.12",
     "path": "^0.12.7",
+    "pinia": "^3.0.2",
     "tailwindcss": "^4.1.7",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"

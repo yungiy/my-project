@@ -19,18 +19,30 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<JwtResponse> signup(@RequestBody SignupRequest request) {
-        JwtResponse response = userService.signup(request);
-        return ResponseEntity.ok(response);
+        if (request.getNickname() == null || request.getNickname().isBlank()) {
+            throw new IllegalArgumentException("닉네임은 필수입니다.");
+        }
+
+        if (userRepository.existsByNickname(request.getNickname())) {
+            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+        }
+
+        User user = new User(request.getNickname());
+        userRepository.save(user);
+
+        String token = jwtUtil.generateToken(user.getId(), user.getNickname());
+        return ResponseEntity.ok(new JwtResponse(token));
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request) {
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
         String nickname = request.getNickname();
-
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 닉네임입니다."));
 
         String token = jwtUtil.generateToken(user.getId(), user.getNickname());
-        return new JwtResponse(token);
+        return ResponseEntity.ok(new JwtResponse(token));
     }
+
+
 }

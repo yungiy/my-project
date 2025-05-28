@@ -48,4 +48,14 @@ public class PostService {
         List<Post> posts = postRepository.findAll(spec);
         return posts.stream().map(PostResponse::new).toList();
     }
+
+    public List<Post> findAllByUserId(Long userId) {
+        return postRepository.findAllByUserId(userId);
+    }
+
+    public Post findById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+    }
+
 }

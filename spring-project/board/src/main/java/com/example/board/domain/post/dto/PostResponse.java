@@ -3,6 +3,8 @@ package com.example.board.domain.post.dto;
 import com.example.board.domain.post.Post;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Getter
 public class PostResponse {
 
@@ -12,11 +14,21 @@ public class PostResponse {
     private final String category;
     private final String nickname;
 
-    public PostResponse(Post post) {
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
+
+    public PostResponse(Post post, Long viewCount) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.category = post.getCategory();
-        this.nickname = post.getUser().getNickname(); // 연관된 사용자 닉네임
+        this.nickname = post.getUser().getNickname();
+
+        this.createdAt = post.getCreatedAt();
+        this.updatedAt = post.getUpdatedAt();
+    }
+
+    public PostResponse(Post post) {
+        this(post, (long) post.getViews()); // 또는 기본값
     }
 }

@@ -1,9 +1,11 @@
 <template>
   <input
       ref="inputRef"
-      v-bind="attrs"
-      :type="type"
       :class="['font-medium focus:outline-none', customClass]"
+      :type="type"
+      :value="modelValue"
+      v-bind="attrs"
+      @input="$emit('update:modelValue', $event.target.value)"
   />
 </template>
 
@@ -13,26 +15,30 @@ import { defineComponent, ref, computed, useAttrs } from 'vue';
 export default defineComponent({
   name: 'Input',
   props: {
+    modelValue: {
+      type: String,
+      default: ''
+    },
     type: {
       type: String as () => 'text' | 'password' | 'email' | 'search',
-      required: true,
+      required: true
     },
     class: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
+  emits: ['update:modelValue'],
   setup(props) {
     const attrs = useAttrs();
     const inputRef = ref<HTMLInputElement | null>(null);
-    const customClass = computed(() => (props.class ?? '') as string);
-
+    const customClass = computed(() => props.class ?? '');
     return {
       inputRef,
-      type: props.type,
       customClass,
       attrs,
+      type: props.type,
     };
-  },
+  }
 });
 </script>

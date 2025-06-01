@@ -1,19 +1,11 @@
-<!-- src/domain/post/ui/PostPage/PostList.vue -->
 <script lang="ts" setup>
 import PostItem from './PostItem.vue';
 import { useRouter } from 'vue-router';
-
+import { Post } from '@/app/types/Post';
 const props = defineProps<{
-  posts: Array<{
-    id: number;
-    title: string;
-    content: string;
-    nickname: string;
-    createdAt: string;
-    updatedAt: string;
-  }>
+  posts: Post[];
 }>();
-console.log('[posts 데이터 확인]', props.posts);
+
 const router = useRouter();
 
 function goToDetail(id: number | string) {
@@ -27,7 +19,7 @@ function goToDetail(id: number | string) {
         v-for="post in props.posts"
         :key="post.id"
         @click="goToDetail(post.id)"
-        class="flex-1 min-w-[320px] max-w-[350px] cursor-pointer"
+        class="flex-1 min-w-[320px] max-w-[340px] cursor-pointer"
     >
       <PostItem :post="post" />
     </div>

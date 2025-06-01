@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     setNickname(nickname: string) {
       this.nickname = nickname;
+      localStorage.setItem('nickname', nickname);
     },
     setJwt(token: string) {
       this.jwt = token;

@@ -10,7 +10,6 @@ const router = useRouter();
 const search = ref('');
 const debouncedSearch = ref('');
 
-// 디바운스: 입력 멈춘 뒤 400ms 후 반영
 let debounceTimer: any = null;
 watch(search, (val) => {
   clearTimeout(debounceTimer);
@@ -19,10 +18,8 @@ watch(search, (val) => {
   }, 400);
 });
 
-// 검색어가 있으면 활성
 const enabled = computed(() => !!debouncedSearch.value);
 
-// vue-query: 검색 API (debouncedSearch로 실행)
 const { data: posts, isLoading, isError, refetch } = useQuery({
   queryKey: ['searchPosts', debouncedSearch],
   queryFn: () => fetchSearchPosts(debouncedSearch.value),
@@ -55,7 +52,7 @@ function onSearch() {
 </script>
 
 <template>
-  <div class="mx-auto px-4 py-8">
+  <div class="container mx-auto px-4 py-8">
     <Searchbar v-model="search" placeholder="검색어를 입력하세요" @search="onSearch" />
     <div v-if="debouncedSearch">
       <div v-if="isLoading" class="text-gray-400 mt-4">검색 중...</div>
@@ -70,6 +67,7 @@ function onSearch() {
               :key="post.id"
               :post="post"
               @click="goDetail(post.id)"
+              class="cursor-pointer"
           />
         </div>
       </template>

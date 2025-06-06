@@ -2,8 +2,10 @@ package com.example.board;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication // ← @ComponentScan + @EnableAutoConfiguration 등 포함
+@SpringBootApplication
+@EnableJpaAuditing
 public class BoardApplication {
 
 	public static void main(String[] args) {

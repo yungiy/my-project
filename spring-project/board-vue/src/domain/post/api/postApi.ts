@@ -15,3 +15,12 @@ export async function fetchSearchPosts(params: { title?: string; category?: stri
   );
   return await kyInstance().get('posts/search', { searchParams }).json<any[]>();
 }
+
+export async function createPost(data: { title: string; content: string; category: string }) {
+  const ky = kyInstance();
+  return await ky.post('posts/create', { json: data }).json();
+}
+
+export async function deletePost(postId: number) {
+  await kyInstance().delete(`posts/${postId}`);
+}

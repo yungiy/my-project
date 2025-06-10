@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import PostItem from './PostItem.vue';
 import { useRouter } from 'vue-router';
-import { Post } from '@/app/types/Post';
+import type { Post } from '@/app/types/Post';
 const props = defineProps<{
   posts: Post[];
 }>();

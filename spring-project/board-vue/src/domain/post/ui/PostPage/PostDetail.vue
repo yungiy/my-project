@@ -7,6 +7,8 @@ import CommentList from '@/domain/comment/ui/CommentList.vue';
 import Button from '@/shared/ui/Button.vue';
 import {deletePost, fetchPostDetail} from '@/domain/post/api/postApi';
 import {createComment, fetchComments} from '@/domain/comment/api/commentApi';
+import type {Post} from '@/app/types/Post';
+import {marked} from 'marked';
 
 const route = useRoute();
 const postId = Number(route.params.id);
@@ -14,7 +16,7 @@ const postId = Number(route.params.id);
 const userStore = useUserStore();
 const myNickname = computed(() => userStore.nickname || localStorage.getItem('nickname') || '');
 
-const {data: post, isLoading, isError} = useQuery({
+const {data: post, isLoading, isError} = useQuery<Post>({
   queryKey: ['post', postId],
   queryFn: () => fetchPostDetail(postId),
   enabled: !!postId
@@ -51,7 +53,10 @@ const deleteMutation = useMutation({
   }
 });
 
-// 삭제 버튼 클릭 핸들러
+const markdownContent = computed(() =>
+    post.value ? marked.parse(post.value.content ?? '') : ''
+);
+
 function handleDelete(){
   if(confirm('정말 삭제하시겠습니까?')){
     deleteMutation.mutate();
@@ -78,18 +83,20 @@ function formatDate(dateString: string){
   </div>
   <div v-else-if="post" class="max-w-4xl mx-auto p-6">
     <h1 class="text-4xl font-extrabold py-4 leading-tight">
-      {{ post.title }}
+      {{ (post as Post)?.title }}
     </h1>
-    <div class="flex items-center justify-between py-2">
+    <div class="flex items-center justify-between pb-8">
       <div class="flex text-gray-700 text-base font-semibold gap-2">
-        <span>{{ post.nickname }}</span>
+        <span>{{ (post as Post)?.nickname }}</span>
         <span>·</span>
-        <span class="text-gray-400">{{ formatDate(post.createdAt) }}</span>
+        <span class="text-gray-400">{{
+            formatDate((post as Post)?.createdAt)
+          }}</span>
       </div>
       <div class="flex gap-2 items-center text-base text-gray-500 font-medium">
-        <span>{{ post.category }}</span>
-        <span>{{ post.views }}회</span>
-        <template v-if="post.nickname === myNickname">
+        <span>{{ (post as Post)?.category }}</span>
+        <span>{{ (post as Post)?.views }}회</span>
+        <template v-if="(post as Post)?.nickname === myNickname">
           <Button
               class="px-4 py-1 border text-black text-base border-gray-300 hover:bg-green-600 hover:text-white">
             수정하기
@@ -104,9 +111,10 @@ function formatDate(dateString: string){
     </div>
 
     <div
-        class="prose max-w-full text-lg leading-relaxed py-5 whitespace-pre-line">
-      {{ post.content }}
+        class="prose max-w-full text-lg"
+        v-html="markdownContent">
     </div>
+
 
     <div class="py-5">
       <CommentList

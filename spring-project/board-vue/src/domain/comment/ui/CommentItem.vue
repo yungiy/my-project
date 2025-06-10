@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { Comment } from '@/app/types/Comment';
-defineProps<{ comment: Comment[] }>();
+import type { Comment } from '@/app/types/Comment';
+defineProps<{ comment: Comment }>();
 </script>
 
 <template>

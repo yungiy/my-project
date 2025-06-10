@@ -4,7 +4,7 @@ import { useUserStore } from '@/domain/user/store/userStore';
 export const kyInstance = () => {
   const userStore = useUserStore();
   return ky.create({
-    prefixUrl: 'http://localhost:8080',
+    prefixUrl: 'https://yungiy-blog.loca.lt',
     hooks: {
       beforeRequest: [
         request => {

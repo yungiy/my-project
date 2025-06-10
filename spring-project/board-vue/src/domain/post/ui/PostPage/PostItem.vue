@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {computed} from 'vue';
-import {Post} from '@/app/types/Post.ts';
+import type {Post} from '@/app/types/Post.ts';
 
 const props = defineProps<{
   post: Post
@@ -26,7 +26,7 @@ const formattedDate = computed(() => {
         class="flex items-center justify-between mt-auto pt-2 border-t border-gray-300">
       <div class="flex items-center gap-1 text-[10px] px-4 text-gray-400">
         <span>{{ formattedDate }}</span> /
-        <span>회 조회</span>
+        <span>{{post.views}}</span>
       </div>
       <div class="flex items-center gap-1 px-4 text-gray-600">
         <span class="font-semibold text-[11px]">{{ post.nickname }}</span>

@@ -16,6 +16,7 @@ public class PostResponse {
 
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
+    private final Long views;
 
     public PostResponse(Post post, Long viewCount) {
         this.id = post.getId();
@@ -23,9 +24,9 @@ public class PostResponse {
         this.content = post.getContent();
         this.category = post.getCategory();
         this.nickname = post.getUser().getNickname();
-
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getUpdatedAt();
+        this.views = viewCount;
     }
 
     public PostResponse(Post post) {

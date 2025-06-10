@@ -71,8 +71,11 @@ public class PostController {
     public ResponseEntity<PostResponse> getPost(
             @PathVariable Long id,
             @RequestHeader(value = "Authorization", required = false) String tokenHeader) {
-        redisViewCountManager.incrementView(id);
+
+        redisViewCountManager.incrementView(id); // Redis 조회수 증가
         Post post = postService.findById(id);
-        return ResponseEntity.ok(new PostResponse(post));
+        Long viewCount = (long) redisViewCountManager.getViewCount(id);
+
+        return ResponseEntity.ok(new PostResponse(post, viewCount));
     }
 }

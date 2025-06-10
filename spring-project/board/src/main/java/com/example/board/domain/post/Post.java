@@ -28,6 +28,7 @@ public class Post {
 
     private String category;
 
+    @Getter
     @Setter
     private int views = 0;
 
@@ -56,4 +57,5 @@ public class Post {
         this.content = content;
         this.category = category;
     }
+
 }
